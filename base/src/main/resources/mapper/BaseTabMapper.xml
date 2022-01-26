@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.sanmeng.base.dao.BaseTabDAO">
+
+    <resultMap id="BaseResultMap" type="cc.sanmeng.base.po.BaseTabPo">
+        <result column="name" property="name"/>
+        <result column="img" property="img"/>
+        <result column="sort" property="sort"/>
+        <result column="desc" property="desc"/>
+        <result column="icon" property="icon"/>
+        <result column="tab_type" property="tabType"/>
+        <result column="status" property="status"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                name,
+                img,
+                sort,
+                `desc`,
+                tab_type,
+                icon,
+                status,
+                gmt_create,
+                gmt_modified
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="Where_Clause">
+        <where>
+
+        </where>
+    </sql>
+
+    <sql id="WhereList_Clause">
+        <where>
+            <if test="status != null and status != ''">
+                status = #{status}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="add" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="cc.sanmeng.base.po.BaseTabPo">
+        INSERT INTO t_base_tab
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != icon'>
+                icon,
+            </if>
+            <if test='null != name'>
+                name,
+            </if>
+            <if test='null != img'>
+                img,
+            </if>
+            <if test='null != sort'>
+                sort,
+            </if>
+            <if test='null != desc'>
+                `desc`,
+            </if>
+            <if test='null != tabType'>
+                tab_type,
+            </if>
+            <if test='null != status'>
+                status,
+            </if>
+            <if test='null != gmtCreate'>
+                gmt_create,
+            </if>
+            <if test='null != gmtModified'>
+                gmt_modified
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != icon'>
+                #{icon},
+            </if>
+            <if test='null != name'>
+                #{name},
+            </if>
+            <if test='null != img'>
+                #{img},
+            </if>
+            <if test='null != sort'>
+                #{sort},
+            </if>
+            <if test='null != desc'>
+                #{desc},
+            </if>
+            <if test='null != tabType'>
+                #{tabType},
+            </if>
+            <if test='null != status'>
+                #{status},
+            </if>
+            <if test='null != gmtCreate'>
+                #{gmtCreate},
+            </if>
+            <if test='null != gmtModified'>
+                #{gmtModified}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE
+        FROM t_base_tab
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="cc.sanmeng.base.po.BaseTabPo">
+        UPDATE t_base_tab
+        <set>
+            <if test='null != name'>name = #{name},</if>
+            <if test='null != img'>img = #{img},</if>
+            <if test='null != icon'>icon = #{icon},</if>
+            <if test='null != sort'>sort = #{sort},</if>
+            <if test='null != desc'>`desc` = #{desc},</if>
+            <if test='null != tabType'>tab_type = #{tabType},</if>
+            <if test='null != status'>status = #{status},</if>
+            <if test='null != gmtCreate'>gmt_create = #{gmtCreate},</if>
+            <if test='null != gmtModified'>gmt_modified = #{gmtModified}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="queryById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_base_tab
+        WHERE id = #{id}
+    </select>
+
+    <select id="queryByPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_base_tab
+        <include refid="Where_Clause"/>
+        <if test="pager.mysqlQueryCondition != null and pager.mysqlQueryCondition != ''">
+            ${pager.mysqlQueryCondition}
+        </if>
+    </select>
+
+    <select id="queryByCount" resultType="java.lang.Long">
+        SELECT count(1)
+        FROM t_base_tab
+        <include refid="Where_Clause"/>
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_base_tab
+        <include refid="WhereList_Clause"/>
+    </select>
+</mapper>

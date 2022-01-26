@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+}
+
+group 'cc.sanmeng'
+version '1.0'
+
+
+allprojects {
+
+    repositories {
+        maven {
+            credentials {
+                username 'admin'
+                password 'admin123'
+            }
+            url 'https://nexus.huhdcc.top:8082/repository/maven-public/'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+repositories {
+    maven {
+        credentials {
+            username 'admin'
+            password 'admin123'
+        }
+        url 'https://nexus.huhdcc.top:8082/repository/maven-public/'
+    }
+}
+
+sourceSets {
+    main
+    api
+}
+
+//api
+task apiJar(type: Jar) {
+    classifier = 'api'
+    from sourceSets.api.output
+}
+//main
+task sourcesJar(type: Jar) {
+    from sourceSets.main.output
+}
+artifacts {
+    archives apiJar
+    archives sourcesJar
+}
+
+dependencies {
+
+}
